@@ -53,10 +53,7 @@ class FollowSerializer(serializers.ModelSerializer):
         ]
 
     def validate(self, data):
-        if not User.objects.filter(username=data.get('following')).exists():
-            raise serializers.ValidationError(
-                'Требуется указать корректного подписанта!')
         if self.context['request'].user == data['following']:
             raise serializers.ValidationError(
                 'Нельзя подписаться на самого себя!')
-        return data
+        return super().validate(data)
